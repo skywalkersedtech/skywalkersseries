@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYWALKERS - Free Mock Test Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom Animations */
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .ticker-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll 20s linear infinite;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <nav class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-paper-plane text-2xl mr-2"></i>
+                    <span class="font-bold text-2xl tracking-wider">SKYWALKERS</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="hover:text-yellow-300 transition">Home</a>
+                    <a href="#" class="hover:text-yellow-300 transition">Leaderboard</a>
+                    <a href="#" class="hover:text-yellow-300 transition">About Us</a>
+                </div>
+                <button class="bg-yellow-400 text-blue-900 px-4 py-2 rounded-lg font-bold hover:bg-yellow-300 transition">
+                    Login / Signup
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="relative bg-gradient-to-r from-blue-600 to-blue-800 h-[500px] flex items-center justify-center text-center text-white overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10">
+            <i class="fa-solid fa-graduation-cap text-9xl absolute top-10 left-10"></i>
+            <i class="fa-solid fa-book-open text-9xl absolute bottom-10 right-10"></i>
+        </div>
+
+        <div class="relative z-10 px-4">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Ab Rukna Mana Hai! <br> <span class="text-yellow-400">Crack Your Dream Job</span></h1>
+            <p class="text-xl md:text-2xl mb-8 opacity-90">SSC, Railways, aur Banking ke asli PYQs – Bilkul FREE.</p>
+            <a href="#categories" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition duration-300">
+                Start Practice Now <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-yellow-400 text-blue-900 py-3 overflow-hidden border-b-4 border-blue-900 font-bold text-lg shadow-inner">
+        <div class="ticker-content">
+            📢 BREAKING: SSC CGL 2024 Mains Papers Added! &nbsp;&nbsp;|&nbsp;&nbsp; 🔥 FREE: SSC CGL, CHSL, CPO, GD 2025 PYQs Available Here &nbsp;&nbsp;|&nbsp;&nbsp; 🚀 Railway NTPC Mock Live &nbsp;&nbsp;|&nbsp;&nbsp; 💯 Skywalkers Special: Attempt Now!
+        </div>
+    </div>
+
+    <section id="categories" class="max-w-7xl mx-auto px-4 py-16">
+        <h2 class="text-3xl font-bold text-center mb-12 text-blue-900">Choose Your Battlefield</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 cursor-pointer border-t-4 border-blue-600 group">
+                <div class="text-blue-600 text-4xl mb-4 group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">SSC Exams</h3>
+                <p class="text-gray-600 text-sm">CGL, CHSL, MTS, CPO, GD</p>
+                <div class="mt-4 text-blue-600 font-semibold group-hover:underline">Explore <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 cursor-pointer border-t-4 border-red-600 group">
+                <div class="text-red-600 text-4xl mb-4 group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-train"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Railways</h3>
+                <p class="text-gray-600 text-sm">NTPC, Group D, ALP</p>
+                <div class="mt-4 text-red-600 font-semibold group-hover:underline">Explore <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 cursor-pointer border-t-4 border-green-600 group">
+                <div class="text-green-600 text-4xl mb-4 group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Banking</h3>
+                <p class="text-gray-600 text-sm">IBPS PO, Clerk, SBI</p>
+                <div class="mt-4 text-green-600 font-semibold group-hover:underline">Explore <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+
+             <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 cursor-pointer border-t-4 border-purple-600 group">
+                <div class="text-purple-600 text-4xl mb-4 group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-person-military-rifle"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Defence/State</h3>
+                <p class="text-gray-600 text-sm">CDS, AFCAT, Police SI</p>
+                <div class="mt-4 text-purple-600 font-semibold group-hover:underline">Explore <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-blue-50 py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-900">Balak Kya Bolte Hain? <span class="text-yellow-500 text-4xl">★</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="bg-white p-8 rounded-tr-3xl rounded-bl-3xl shadow-md relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-blue-100 absolute top-4 left-4"></i>
+                    <p class="text-gray-700 italic mb-6 relative z-10">"Arre bhai, pehle paid course liye the, par asli practice yahi ho rahi hai. Interface ekdum exam hall wala hai! Maza aa gaya."</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">R</div>
+                        <div class="ml-3">
+                            <h4 class="font-bold text-sm">Rohan Kumar</h4>
+                            <p class="text-xs text-gray-500">Patna, Bihar</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-tr-3xl rounded-bl-3xl shadow-md relative mt-4 md:mt-0">
+                    <i class="fa-solid fa-quote-left text-4xl text-blue-100 absolute top-4 left-4"></i>
+                    <p class="text-gray-700 italic mb-6 relative z-10">"Gajab website hai yaar! Saare shifts ek jagah mil gaye, wo bhi free me. Bhagwan bhala kare admin ka. Best for CGL aspirants."</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">P</div>
+                        <div class="ml-3">
+                            <h4 class="font-bold text-sm">Priya Singh</h4>
+                            <p class="text-xs text-gray-500">Indore, MP</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-tr-3xl rounded-bl-3xl shadow-md relative mt-4 md:mt-0">
+                    <i class="fa-solid fa-quote-left text-4xl text-blue-100 absolute top-4 left-4"></i>
+                    <p class="text-gray-700 italic mb-6 relative z-10">"Mock test diya, marks kam aaye par analysis dekh ke dil khush ho gaya. Ab CGL phodna hai! SKYWALKERS OP 🔥"</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">V</div>
+                        <div class="ml-3">
+                            <h4 class="font-bold text-sm">Vikas Yadav</h4>
+                            <p class="text-xs text-gray-500">Lucknow, UP</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-8 text-center">
+        <p class="mb-2">&copy; 2025 SKYWALKERS. Made with ❤️ for Students.</p>
+        <div class="space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fa-brands fa-telegram"></i> Telegram</a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fa-brands fa-youtube"></i> YouTube</a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fa-brands fa-instagram"></i> Instagram</a>
+        </div>
+    </footer>
+
+</body>
+</html>
