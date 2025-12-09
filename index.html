@@ -100,8 +100,11 @@
         
         <div class="relative max-w-7xl mx-auto px-4 flex flex-col items-center text-center z-10">
             <span class="bg-brand-secondary/20 text-brand-secondary border border-brand-secondary px-4 py-1 rounded-full font-bold text-sm uppercase tracking-wider mb-6 inline-block animate-pulse">New 2025 Trend Alert</span>
-            <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">SSC CGL & CHSL 2025<br><span class="text-brand-primary">PYQ Attempt & Decode</span></h2>
-            <p class="text-xl md:text-2xl text-gray-300 font-light mb-8">Bilkul Free. Latest Pattern.</p>
+            <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-2">SSC CGL & CHSL 2025<br><span class="text-brand-primary">PYQ Attempt & Decode</span></h2>
+            
+            <p class="text-2xl md:text-3xl font-bold text-brand-secondary mb-6 italic">"Walk Through The Challenge."</p>
+            
+            <p class="text-xl text-gray-300 font-light mb-8">Bilkul Free. Latest Pattern.</p>
 
             <div class="mini-slider-container w-full max-w-md mb-8">
                 <div class="mini-slide active flex flex-col items-center">
@@ -123,6 +126,7 @@
                     <span class="font-bold">SSC MTS / GD</span>
                 </div>
             </div>
+
             <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
                 <button class="bg-brand-primary text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-brand-dark transition shadow-lg shadow-brand-primary/20 w-full sm:w-auto">
                     Start Attempting Now
@@ -196,7 +200,9 @@
                 <div class="exam-card bg-white rounded-2xl p-6 cursor-pointer group relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-brand-secondary text-brand-dark text-xs font-bold px-3 py-1 rounded-bl-lg z-10">TRENDING</div>
                     <div class="flex justify-between items-start mb-6">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/1200px-Emblem_of_India.svg.png" alt="Govt Logo" class="h-14 w-auto opacity-80 group-hover:opacity-100 transition">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center transition">
+                            <i class="fa-solid fa-fire-flame-curved text-5xl text-brand-secondary group-hover:scale-110 transition"></i>
+                        </div>
                     </div>
                     <h3 class="text-lg font-extrabold text-brand-dark mb-1 group-hover:text-brand-primary">SSC CGL Mains</h3>
                     <p class="text-sm text-gray-500 mb-6 font-medium">2025 SSC PYQ</p>
@@ -285,7 +291,7 @@
             currentMiniSlide = (currentMiniSlide + 1) % miniSlides.length;
             miniSlides[currentMiniSlide].classList.add('active');
         }
-        setInterval(nextMiniSlide, 3000); // Change every 3 seconds
+        setInterval(nextMiniSlide, 3000);
     </script>
 </body>
-</html>
+                    </html>
