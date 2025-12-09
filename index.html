@@ -3,265 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIREWALKERS - The Exam Revolution</title>
+    <title>FIREWALKERS - Walk Through The Challenge</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: { 
                         sans: ['Poppins', 'sans-serif'],
-                        serif: ['Cinzel', 'serif'] 
+                        serif: ['Cinzel', 'serif'] /* For Logo Text if image fails */
                     },
                     colors: {
-                        'brand-dark': '#0F172A', // Deepest Navy
-                        'brand-gold': '#FFD700', // Pure Gold
-                        'brand-fire': '#FF4500', // Red Orange
-                        'brand-orange': '#FFA500', // Bright Orange
+                        // Logo Based Royal Palette
+                        'brand-dark': '#0B1120', // Deep Navy Blue
+                        'brand-gold': '#D4AF37', // Royal Gold
+                        'brand-fire': '#E25822', // Flame Red/Orange
+                        'brand-light': '#F1F5F9', // Light Grayish Blue
                     },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-glow': 'pulse-glow 2s infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        'pulse-glow': {
-                            '0%, 100%': { boxShadow: '0 0 20px rgba(255, 69, 0, 0.5)' },
-                            '50%': { boxShadow: '0 0 40px rgba(255, 215, 0, 0.8)' },
-                        }
+                    boxShadow: {
+                        'gold-glow': '0 4px 20px -5px rgba(212, 175, 55, 0.5)',
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Fire Text Gradient */
-        .text-fire-gradient {
-            background: linear-gradient(to right, #FFD700, #FF4500, #FFD700);
+        /* Gold Gradient Text */
+        .text-gradient-gold {
+            background: linear-gradient(to right, #D4AF37, #FDD835, #D4AF37);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
-        }
-        @keyframes shine {
-            to { background-position: 200% center; }
         }
         
-        /* Glass Effect for Cards */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Ticker Animation */
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
+        .ticker-wrap { width: 100%; overflow: hidden; white-space: nowrap; }
+        .ticker-content { display: inline-block; padding-left: 100%; animation: scroll 25s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 2rem; }
+
+        /* Card Hover Effects */
+        .exam-card { transition: all 0.3s ease; border: 1px solid rgba(212, 175, 55, 0.2); }
+        .exam-card:hover { transform: translateY(-5px); border-color: #D4AF37; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        /* Circle Icons */
+        .circle-icon-box:hover .circle-icon { background: linear-gradient(45deg, #E25822, #D4AF37); color: white; transform: rotateY(360deg); }
+        .circle-icon { transition: all 0.6s ease; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-brand-light text-gray-800">
 
-    <div class="bg-black text-brand-gold py-2 text-xs md:text-sm font-bold tracking-widest border-b border-brand-fire/50">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <span class="animate-pulse">🔥 INDIA'S FASTEST GROWING FREE PYQ PLATFORM</span>
-            <span class="hidden md:inline">DOWNLOAD APP COMING SOON...</span>
+    <div class="bg-brand-dark text-brand-gold py-2 text-sm border-b border-brand-gold/30">
+        <div class="ticker-wrap">
+            <div class="ticker-content font-medium tracking-wide">
+                <span class="ticker-item">🔥 <span class="text-white">NEW:</span> SSC CGL & CHSL 2025 PYQs UPLOADED</span>
+                <span class="ticker-item">⚔️ <span class="text-white">CHALLENGE:</span> DECODE THE NEW TCS TREND</span>
+                <span class="ticker-item">🏆 <span class="text-white">STATUS:</span> 100% FREE FOR ALL ASPIRANTS</span>
+                <span class="ticker-item">🚀 RAILWAY NTPC MOCKS LIVE NOW</span>
+            </div>
         </div>
     </div>
 
-    <header class="sticky top-0 z-50 bg-brand-dark/95 backdrop-blur-md shadow-2xl border-b border-white/10">
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             
-            <div class="flex items-center gap-3 group cursor-pointer">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-fire flex items-center justify-center shadow-lg shadow-orange-500/50 group-hover:scale-110 transition">
-                    <i class="fa-solid fa-fire text-white text-xl animate-pulse"></i>
-                </div>
-                <div class="flex flex-col">
-                    <h1 class="text-2xl font-black font-serif tracking-tight text-white leading-none">
-                        FIRE<span class="text-brand-gold">WALKERS</span>
-                    </h1>
-                    <span class="text-[0.6rem] text-gray-400 tracking-[0.2em] uppercase">Walk Through The Challenge</span>
+            <div class="flex items-center gap-3">
+                <img src="./logo.jpg" alt="Firewalkers" class="h-12 md:h-14 w-auto object-contain hidden md:block"> 
+                
+                <div class="flex flex-col md:hidden">
+                    <h1 class="text-2xl font-bold font-serif text-brand-dark tracking-tighter">FIRE<span class="text-brand-gold">WALKERS</span></h1>
                 </div>
             </div>
 
-            <div class="hidden md:flex items-center gap-8 font-semibold text-gray-300">
-                <a href="#" class="hover:text-brand-gold transition">Exams</a>
-                <a href="#" class="hover:text-brand-gold transition">Analysis</a>
-                <a href="#" class="hover:text-brand-gold transition">Pass</a>
+            <div class="hidden md:flex flex-1 max-w-lg mx-8">
+                <div class="relative w-full group">
+                    <input type="text" placeholder="Search exams (e.g., CGL Mains)..." class="w-full border-2 border-gray-200 rounded-full py-2 px-5 focus:outline-none focus:border-brand-gold transition-all bg-gray-50">
+                    <button class="absolute right-1 top-1 bg-brand-dark text-brand-gold w-9 h-9 rounded-full flex items-center justify-center hover:bg-brand-fire hover:text-white transition">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </div>
             </div>
 
-            <button class="bg-gradient-to-r from-brand-fire to-brand-orange text-white px-6 py-2 rounded-full font-bold shadow-lg hover:shadow-orange-500/50 transform hover:-translate-y-1 transition text-sm">
-                Login / Signup
-            </button>
+            <div class="flex items-center gap-4">
+                <a href="#" class="text-sm font-bold text-brand-dark hover:text-brand-fire transition">LOGIN</a>
+                <a href="#" class="bg-gradient-to-r from-brand-dark to-gray-800 text-brand-gold px-6 py-2 rounded-full font-bold text-sm hover:shadow-gold-glow transition border border-brand-gold/30">
+                    SIGNUP
+                </a>
+            </div>
         </div>
     </header>
 
-    <div class="relative bg-brand-dark overflow-hidden min-h-[600px] flex items-center">
-        
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-fire/20 rounded-full blur-[100px]"></div>
-        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-gold/10 rounded-full blur-[80px]"></div>
+    <div class="relative bg-brand-dark text-white py-16 md:py-24 overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-fire/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3"></div>
 
-        <div class="relative max-w-7xl mx-auto px-4 w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            
-            <div class="text-left z-10 space-y-6">
-                <div class="inline-block border border-brand-gold/50 rounded-full px-4 py-1 bg-brand-gold/10 backdrop-blur-md">
-                    <span class="text-brand-gold text-xs font-bold uppercase tracking-wider">🚀 New SSC Trend Decoded</span>
-                </div>
-                
-                <h1 class="text-5xl md:text-7xl font-black font-serif text-white leading-tight">
-                    CRACK EXAMS <br>
-                    <span class="text-fire-gradient">LIKE A WARRIOR</span>
-                </h1>
-                
-                <p class="text-lg text-gray-400 max-w-lg leading-relaxed">
-                    SSC, Railway aur Banking ke asli PYQs ka samundar. 
-                    <span class="text-white font-bold">100% Free.</span> 
-                    Ab rukna mana hai.
-                </p>
-
-                <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <button class="bg-brand-gold text-brand-dark px-8 py-4 rounded-xl font-bold text-lg shadow-[0_0_20px_rgba(255,215,0,0.4)] hover:shadow-[0_0_30px_rgba(255,215,0,0.6)] transform hover:scale-105 transition animate-pulse-glow">
-                        Start Practice Free
-                    </button>
-                    <button class="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white border border-white/20 hover:bg-white/10 transition">
-                        <i class="fa-solid fa-play-circle text-brand-fire text-xl"></i> Watch Demo
-                    </button>
-                </div>
-                
-                <div class="flex items-center gap-6 pt-6 opacity-70">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-users text-brand-gold"></i>
-                        <span class="text-gray-400 text-sm">10k+ Students</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-file-circle-check text-brand-gold"></i>
-                        <span class="text-gray-400 text-sm">500+ Mocks</span>
-                    </div>
-                </div>
+        <div class="relative max-w-7xl mx-auto px-4 text-center z-10">
+            <div class="inline-flex items-center gap-2 border border-brand-gold/50 rounded-full px-4 py-1 mb-6 bg-brand-gold/10 backdrop-blur-sm animate-pulse">
+                <i class="fa-solid fa-fire text-brand-fire"></i>
+                <span class="text-brand-gold text-xs font-bold tracking-widest uppercase">New Trend Alert</span>
             </div>
 
-            <div class="hidden md:flex justify-center relative z-10">
-                <img src="https://cdni.iconscout.com/illustration/premium/thumb/business-success-illustration-download-in-svg-png-gif-file-formats--achievement-goal-flag-startup-pack-illustrations-3316688.png" 
-                     alt="Success 3D" 
-                     class="w-full max-w-md drop-shadow-2xl animate-float filter brightness-110 contrast-125">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight font-serif">
+                SSC CGL & CHSL 2025 <br>
+                <span class="text-gradient-gold">PYQ Attempt & Decode</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl font-serif text-gray-300 italic mb-8">
+                "Walk Through The Challenge."
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-brand-gold text-brand-dark px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:scale-105 transition shadow-lg shadow-brand-gold/30">
+                    Start Attempting Now
+                </button>
+                <button class="px-10 py-4 rounded-full font-bold text-lg border border-gray-600 hover:border-brand-gold hover:text-brand-gold transition bg-white/5 backdrop-blur-sm">
+                    View Analysis
+                </button>
             </div>
         </div>
     </div>
 
-    <section class="relative z-20 -mt-16 max-w-6xl mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="glass-card p-6 rounded-2xl flex items-center gap-4 hover:bg-brand-dark/80 transition cursor-pointer group">
-                <div class="w-14 h-14 rounded-full bg-brand-fire/20 flex items-center justify-center text-brand-fire text-2xl group-hover:scale-110 transition">
+    <section class="relative z-20 max-w-6xl mx-auto px-4 -mt-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="bg-white p-6 rounded-xl shadow-xl border-b-4 border-brand-fire flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-brand-fire/10 flex items-center justify-center text-brand-fire text-2xl">
                     <i class="fa-solid fa-bolt"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-white text-lg">Daily Targets</h3>
-                    <p class="text-gray-400 text-xs">Consistent Practice</p>
+                    <h3 class="font-bold text-brand-dark">Free 2025 PYQs</h3>
+                    <p class="text-xs text-gray-500">Updated with Solutions</p>
                 </div>
             </div>
-            
-            <div class="glass-card p-6 rounded-2xl flex items-center gap-4 hover:bg-brand-dark/80 transition cursor-pointer group border-b-4 border-brand-gold">
-                <div class="w-14 h-14 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold text-2xl group-hover:scale-110 transition">
-                    <i class="fa-solid fa-trophy"></i>
+            <div class="bg-white p-6 rounded-xl shadow-xl border-b-4 border-brand-dark flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-brand-dark/10 flex items-center justify-center text-brand-dark text-2xl">
+                    <i class="fa-solid fa-crosshairs"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-white text-lg">Leaderboard</h3>
-                    <p class="text-gray-400 text-xs">Compete with India</p>
+                    <h3 class="font-bold text-brand-dark">Targeted Mocks</h3>
+                    <p class="text-xs text-gray-500">SSC, Railway & State</p>
                 </div>
             </div>
-
-            <div class="glass-card p-6 rounded-2xl flex items-center gap-4 hover:bg-brand-dark/80 transition cursor-pointer group">
-                <div class="w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-2xl group-hover:scale-110 transition">
-                    <i class="fa-solid fa-chart-pie"></i>
+            <div class="bg-white p-6 rounded-xl shadow-xl border-b-4 border-brand-gold flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-brand-gold/10 flex items-center justify-center text-brand-gold text-2xl">
+                    <i class="fa-solid fa-unlock"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-white text-lg">Smart Analysis</h3>
-                    <p class="text-gray-400 text-xs">Know Your Weakness</p>
+                    <h3 class="font-bold text-brand-dark">100% Free Access</h3>
+                    <p class="text-xs text-gray-500">No Hidden Charges</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-20 bg-white">
+    <section class="py-16 bg-brand-light">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-4xl font-black font-serif text-brand-dark mb-12">CHOOSE YOUR BATTLE</h2>
-            
-            <div class="flex flex-wrap justify-center gap-8 md:gap-12">
-                <a href="#" class="group flex flex-col items-center">
-                    <div class="w-24 h-24 rounded-2xl bg-gray-50 flex items-center justify-center text-4xl text-gray-400 shadow-sm border border-gray-100 group-hover:bg-brand-dark group-hover:text-brand-gold group-hover:-translate-y-2 transition-all duration-300">
+            <h2 class="text-2xl font-bold text-brand-dark mb-10 font-serif">CHOOSE YOUR BATTLEFIELD</h2>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-14">
+                
+                <a href="#" class="group flex flex-col items-center circle-icon-box">
+                    <div class="w-20 h-20 bg-white rounded-full shadow-md flex items-center justify-center text-3xl text-brand-dark circle-icon border-2 border-gray-200">
                         <i class="fa-solid fa-landmark"></i>
                     </div>
-                    <span class="mt-4 font-bold text-gray-700 group-hover:text-brand-dark">SSC CGL/CHSL</span>
-                </a>
-                
-                <a href="#" class="group flex flex-col items-center">
-                    <div class="w-24 h-24 rounded-2xl bg-gray-50 flex items-center justify-center text-4xl text-gray-400 shadow-sm border border-gray-100 group-hover:bg-brand-fire group-hover:text-white group-hover:-translate-y-2 transition-all duration-300">
-                        <i class="fa-solid fa-train"></i>
-                    </div>
-                    <span class="mt-4 font-bold text-gray-700 group-hover:text-brand-fire">RAILWAYS</span>
+                    <span class="mt-3 font-bold text-sm text-gray-600 group-hover:text-brand-fire">SSC</span>
                 </a>
 
-                <a href="#" class="group flex flex-col items-center">
-                    <div class="w-24 h-24 rounded-2xl bg-gray-50 flex items-center justify-center text-4xl text-gray-400 shadow-sm border border-gray-100 group-hover:bg-green-600 group-hover:text-white group-hover:-translate-y-2 transition-all duration-300">
+                <a href="#" class="group flex flex-col items-center circle-icon-box">
+                    <div class="w-20 h-20 bg-white rounded-full shadow-md flex items-center justify-center text-3xl text-brand-dark circle-icon border-2 border-gray-200">
+                        <i class="fa-solid fa-train"></i>
+                    </div>
+                    <span class="mt-3 font-bold text-sm text-gray-600 group-hover:text-brand-fire">RAILWAY</span>
+                </a>
+
+                <a href="#" class="group flex flex-col items-center circle-icon-box">
+                    <div class="w-20 h-20 bg-white rounded-full shadow-md flex items-center justify-center text-3xl text-brand-dark circle-icon border-2 border-gray-200">
                         <i class="fa-solid fa-building-columns"></i>
                     </div>
-                    <span class="mt-4 font-bold text-gray-700 group-hover:text-green-600">BANKING</span>
+                    <span class="mt-3 font-bold text-sm text-gray-600 group-hover:text-brand-fire">BANKING</span>
                 </a>
+
+                <a href="#" class="group flex flex-col items-center circle-icon-box">
+                    <div class="w-20 h-20 bg-white rounded-full shadow-md flex items-center justify-center text-3xl text-brand-dark circle-icon border-2 border-gray-200">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <span class="mt-3 font-bold text-sm text-gray-600 group-hover:text-brand-fire">POLICE/STATE</span>
+                </a>
+
             </div>
         </div>
     </section>
 
-    <section class="py-16 bg-gray-50 border-t border-gray-200">
+    <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-end mb-10">
                 <div>
-                    <h2 class="text-3xl font-bold text-brand-dark font-serif">Trending Now 🔥</h2>
-                    <p class="text-gray-500 mt-1">Most attempted tests by toppers.</p>
+                    <h2 class="text-3xl font-bold text-brand-dark font-serif">Start Test Series</h2>
+                    <p class="text-gray-500 mt-2">Pick an exam and walk through the challenge.</p>
                 </div>
-                <button class="text-brand-fire font-bold hover:underline">View All</button>
+                <a href="#" class="text-brand-fire font-bold hover:text-brand-dark transition hidden md:block">View All <i class="fa-solid fa-arrow-right ml-1"></i></a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition hover:-translate-y-1 border border-gray-100 group relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1 h-full bg-brand-gold"></div>
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-brand-dark text-brand-gold flex items-center justify-center text-2xl">
-                            <i class="fa-solid fa-crown"></i>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="exam-card bg-white rounded-2xl p-6 relative cursor-pointer group">
+                    <div class="absolute top-0 right-0 bg-brand-gold text-brand-dark text-xs font-bold px-3 py-1 rounded-bl-lg">TRENDING</div>
+                    <div class="mb-6">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-brand-light group-hover:bg-brand-dark transition duration-300">
+                            <i class="fa-solid fa-fire text-4xl text-brand-fire group-hover:text-brand-gold transition"></i>
                         </div>
-                        <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded">LIVE</span>
                     </div>
-                    <h3 class="font-bold text-lg text-gray-800 group-hover:text-brand-fire transition">SSC CGL Mains</h3>
-                    <p class="text-gray-500 text-sm mb-6">Full Mock Test - New Pattern</p>
-                    <button class="w-full py-2 rounded-lg bg-gray-100 font-bold text-gray-700 group-hover:bg-brand-dark group-hover:text-brand-gold transition">Attempt</button>
+                    <h3 class="text-lg font-bold text-brand-dark mb-1">SSC CGL Mains</h3>
+                    <p class="text-sm text-gray-500 mb-6">2025 PYQ (Updated)</p>
+                    <button class="w-full py-2 rounded-full border-2 border-brand-dark font-bold text-brand-dark group-hover:bg-brand-dark group-hover:text-brand-gold transition">
+                        Attempt Now
+                    </button>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition hover:-translate-y-1 border border-gray-100 group relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1 h-full bg-brand-fire"></div>
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-2xl">
-                            <i class="fa-solid fa-train-subway"></i>
+                <div class="exam-card bg-white rounded-2xl p-6 relative cursor-pointer group">
+                    <span class="absolute top-4 right-4 text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">FREE</span>
+                    <div class="mb-6">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-brand-light group-hover:bg-brand-dark transition duration-300">
+                            <i class="fa-solid fa-train-subway text-4xl text-brand-dark group-hover:text-brand-gold transition"></i>
                         </div>
-                        <span class="bg-green-100 text-green-600 text-xs font-bold px-2 py-1 rounded">FREE</span>
                     </div>
-                    <h3 class="font-bold text-lg text-gray-800 group-hover:text-brand-fire transition">RRB NTPC</h3>
-                    <p class="text-gray-500 text-sm mb-6">Previous Year Shift 1</p>
-                    <button class="w-full py-2 rounded-lg bg-gray-100 font-bold text-gray-700 group-hover:bg-brand-fire group-hover:text-white transition">Attempt</button>
+                    <h3 class="text-lg font-bold text-brand-dark mb-1">Railway NTPC</h3>
+                    <p class="text-sm text-gray-500 mb-6">All Shifts Live</p>
+                    <button class="w-full py-2 rounded-full border-2 border-brand-dark font-bold text-brand-dark group-hover:bg-brand-dark group-hover:text-brand-gold transition">
+                        Attempt Now
+                    </button>
                 </div>
-                
-                 </div>
+
+                <div class="exam-card bg-white rounded-2xl p-6 relative cursor-pointer group">
+                    <span class="absolute top-4 right-4 text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">FREE</span>
+                    <div class="mb-6">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-brand-light group-hover:bg-brand-dark transition duration-300">
+                            <i class="fa-solid fa-user-shield text-4xl text-brand-dark group-hover:text-brand-gold transition"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-brand-dark mb-1">MP Police / UPSI</h3>
+                    <p class="text-sm text-gray-500 mb-6">State Special Mocks</p>
+                    <button class="w-full py-2 rounded-full border-2 border-brand-dark font-bold text-brand-dark group-hover:bg-brand-dark group-hover:text-brand-gold transition">
+                        Attempt Now
+                    </button>
+                </div>
+
+                <div class="exam-card bg-white rounded-2xl p-6 relative cursor-pointer group">
+                    <span class="absolute top-4 right-4 text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">FREE</span>
+                    <div class="mb-6">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-brand-light group-hover:bg-brand-dark transition duration-300">
+                            <i class="fa-solid fa-briefcase text-4xl text-brand-dark group-hover:text-brand-gold transition"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-brand-dark mb-1">Banking Exams</h3>
+                    <p class="text-sm text-gray-500 mb-6">IBPS / SBI PO</p>
+                    <button class="w-full py-2 rounded-full border-2 border-brand-dark font-bold text-brand-dark group-hover:bg-brand-dark group-hover:text-brand-gold transition">
+                        Attempt Now
+                    </button>
+                </div>
+
+            </div>
         </div>
     </section>
 
-    <footer class="bg-brand-dark text-white py-12 border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h2 class="text-2xl font-serif font-black mb-4">FIRE<span class="text-brand-gold">WALKERS</span></h2>
-            <p class="text-gray-500 text-sm mb-8">Empowering India's Aspirants. Satna, MP.</p>
-            <div class="flex justify-center gap-4 text-gray-400">
-                <i class="fa-brands fa-instagram hover:text-brand-fire cursor-pointer text-xl"></i>
-                <i class="fa-brands fa-youtube hover:text-red-600 cursor-pointer text-xl"></i>
-                <i class="fa-brands fa-telegram hover:text-blue-400 cursor-pointer text-xl"></i>
+    <footer class="bg-brand-dark text-white pt-16 pb-6 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 text-center md:text-left">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+                    <h2 class="text-2xl font-bold font-serif text-white tracking-tight">FIRE<span class="text-brand-gold">WALKERS</span></h2>
+                </div>
+                <p class="text-gray-400 mb-6 max-w-sm mx-auto md:mx-0 text-sm leading-relaxed">
+                    Quality education shouldn't come with a price tag. Join the revolution and walk through your challenges with confidence.
+                </p>
+                <div class="flex space-x-4 justify-center md:justify-start">
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-fire hover:text-white transition"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-600 hover:text-white transition"><i class="fa-brands fa-youtube"></i></a>
+                </div>
             </div>
-            <p class="text-gray-600 text-xs mt-8">&copy; 2025 Firewalkers EdTech.</p>
+            
+            <div>
+                <h3 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Quick Links</h3>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">SSC CGL PYQ</a></li>
+                    <li><a href="#" class="hover:text-white transition">Railway NTPC</a></li>
+                    <li><a href="#" class="hover:text-white transition">State Exams</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Contact</h3>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><i class="fa-solid fa-envelope mr-2 text-brand-fire"></i> firewalkers.edtech@gmail.com</li>
+                    <li><i class="fa-solid fa-location-dot mr-2 text-brand-fire"></i> Satna, MP, India</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-6 text-center text-gray-600 text-xs">
+            &copy; 2025 Firewalkers EdTech. "Walk Through The Challenge."
         </div>
     </footer>
 
