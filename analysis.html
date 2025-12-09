@@ -3,79 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analysis - Firewalkers</title>
+    <title>Analysis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100 font-sans pb-10">
+<body class="bg-gray-100 pb-10 font-sans">
 
-    <header class="bg-white shadow-sm p-4 flex items-center gap-4 sticky top-0 z-50">
-        <a href="index.html" class="text-gray-500"><i class="fa-solid fa-home"></i></a>
-        <h1 class="font-bold text-gray-800">Mock Test Analysis</h1>
+    <header class="bg-white shadow p-4 sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto flex justify-between items-center">
+            <h1 class="font-bold text-gray-800 text-lg">Test Result</h1>
+            <a href="index.html" class="text-sm font-bold text-blue-600 hover:underline">Go Home</a>
+        </div>
     </header>
 
-    <div class="max-w-4xl mx-auto p-4 space-y-6">
-
-        <div class="bg-white rounded-xl shadow-sm p-6 flex flex-col md:flex-row gap-6 items-center justify-between border-t-4 border-blue-500">
-            <div class="text-center w-full">
-                <div class="text-gray-500 text-xs uppercase tracking-wide font-bold">Your Score</div>
-                <div class="text-4xl font-black text-blue-600 mt-1">142<span class="text-lg text-gray-400 font-normal">/390</span></div>
-            </div>
-            <div class="w-px h-12 bg-gray-200 hidden md:block"></div>
-            <div class="text-center w-full">
-                <div class="text-gray-500 text-xs uppercase tracking-wide font-bold">Rank</div>
-                <div class="text-2xl font-bold text-gray-800 mt-1">#452</div>
-            </div>
-            <div class="w-px h-12 bg-gray-200 hidden md:block"></div>
-            <div class="text-center w-full">
-                <div class="text-gray-500 text-xs uppercase tracking-wide font-bold">Percentile</div>
-                <div class="text-2xl font-bold text-green-600 mt-1">88.5%</div>
-            </div>
+    <div class="max-w-3xl mx-auto p-4 space-y-4" id="content">
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-white rounded-xl shadow-sm p-5">
-                <h3 class="font-bold text-gray-700 mb-4">Accuracy Analysis</h3>
-                <div class="flex items-center gap-4">
-                    <div class="w-24 h-24 rounded-full border-8 border-green-500 flex items-center justify-center text-xl font-bold text-gray-800">85%</div>
-                    <div class="space-y-2 text-sm w-full">
-                        <div class="flex justify-between"><span>Correct</span><span class="font-bold text-green-600">68</span></div>
-                        <div class="flex justify-between"><span>Wrong</span><span class="font-bold text-red-600">12</span></div>
-                        <div class="flex justify-between"><span>Skipped</span><span class="font-bold text-gray-400">20</span></div>
+    <script>
+        const res = JSON.parse(localStorage.getItem('finalResult'));
+        const container = document.getElementById('content');
+
+        if(!res) {
+            container.innerHTML = "<p class='text-center mt-10'>No Data Found.</p>";
+        } else {
+            let totalCorrect = 0, totalWrong = 0, totalScore = 0;
+            let sectionHTML = '';
+
+            const secNames = ['Reasoning', 'GK', 'Quant', 'English'];
+
+            res.forEach((sec, idx) => {
+                let sCor = 0, sWro = 0;
+                sec.forEach(q => {
+                    if(q.status === 'answered') {
+                        if(q.marked === 'A') sCor++; // Logic: A is correct for demo
+                        else sWro++;
+                    }
+                });
+                totalCorrect += sCor;
+                totalWrong += sWro;
+                
+                let sScore = (sCor * 2) - (sWro * 0.5);
+                totalScore += sScore;
+
+                sectionHTML += `
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500">
+                        <div class="flex justify-between font-bold mb-1">
+                            <span>${secNames[idx]}</span>
+                            <span>${sScore} / 50</span>
+                        </div>
+                        <div class="text-xs text-gray-500 flex gap-3">
+                            <span class="text-green-600">Correct: ${sCor}</span>
+                            <span class="text-red-600">Wrong: ${sWro}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="bg-white p-6 rounded-xl shadow border-t-4 border-[#D4AF37] text-center mb-6">
+                    <div class="text-gray-500 text-xs font-bold uppercase">Total Score</div>
+                    <div class="text-5xl font-black text-[#0B1120] my-2">${totalScore}</div>
+                    <div class="text-sm text-gray-400">Out of 200</div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mt-6 pt-4 border-t">
+                        <div>
+                            <div class="text-2xl font-bold text-green-600">${totalCorrect}</div>
+                            <div class="text-xs text-gray-500">Correct</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-red-600">${totalWrong}</div>
+                            <div class="text-xs text-gray-500">Wrong</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm p-5">
-                <h3 class="font-bold text-gray-700 mb-4">Sectional Performance</h3>
-                <div class="space-y-3">
-                    <div>
-                        <div class="flex justify-between text-xs mb-1"><span>Reasoning</span><span class="font-bold">45/50</span></div>
-                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-xs mb-1"><span>GK</span><span class="font-bold">12/50</span></div>
-                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-red-500 h-2 rounded-full" style="width: 24%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-xs mb-1"><span>Maths</span><span class="font-bold">48/50</span></div>
-                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full" style="width: 96%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-xs mb-1"><span>English</span><span class="font-bold">35/50</span></div>
-                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-yellow-500 h-2 rounded-full" style="width: 70%"></div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <a href="index.html" class="block w-full bg-brand-dark text-white text-center py-3 rounded-lg font-bold shadow hover:bg-gray-800 transition">
-            <i class="fa-solid fa-list-check mr-2"></i> View Solutions
-        </a>
-        
-        <a href="index.html" class="block text-center text-sm text-gray-500 hover:underline">Back to Home</a>
-
-    </div>
+                <h3 class="font-bold text-gray-700 mb-2">Sectional Breakdown</h3>
+                <div class="space-y-3">${sectionHTML}</div>
+            `;
+        }
+    </script>
 </body>
 </html>
