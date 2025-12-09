@@ -1,228 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Exam Interface</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Shift - FIREWALKERS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Hide scrollbar but allow scroll */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Palette Drawer Transition */
-        .palette-drawer { transition: transform 0.3s ease-in-out; }
-        .palette-drawer.closed { transform: translateX(100%); } /* Hidden on Mobile */
-        
-        /* Desktop: Always visible */
-        @media (min-width: 768px) {
-            .palette-drawer.closed { transform: translateX(0); }
-        }
-
-        /* Radio Button Styling */
-        .opt-radio:checked + div { background-color: #eff6ff; border-color: #3b82f6; border-width: 2px; }
-        .opt-radio:checked + div .circle-id { background-color: #3b82f6; color: white; border-color: #3b82f6; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100 h-screen flex flex-col select-none overflow-hidden font-sans">
+<body class="bg-gray-50 text-gray-800 min-h-screen pb-10">
 
-    <header class="bg-white border-b border-gray-300 h-14 flex justify-between items-center px-3 shrink-0 z-20">
-        <div class="flex items-center gap-2">
-            <div class="font-bold text-[#0B1120] text-lg">FIRE<span class="text-[#D4AF37]">WALKERS</span></div>
-        </div>
-        <div class="flex items-center gap-3">
-            <div class="bg-gray-800 text-white px-3 py-1 rounded text-sm font-mono border border-gray-600 flex items-center gap-2">
-                <i class="fa-regular fa-clock text-[#D4AF37]"></i>
-                <span id="timer">59:59</span>
-            </div>
-            <button onclick="togglePalette()" class="md:hidden text-[#0B1120] bg-gray-200 p-2 rounded hover:bg-gray-300">
-                <i class="fa-solid fa-border-all text-xl"></i>
-            </button>
+    <header class="bg-[#0B1120] text-white sticky top-0 z-50 px-4 py-4 shadow-lg flex items-center gap-4">
+        <a href="index.html" class="hover:text-[#D4AF37]"><i class="fa-solid fa-arrow-left text-xl"></i></a>
+        <div>
+            <h1 class="font-bold text-lg leading-none">SSC CGL 2025</h1>
+            <p class="text-xs text-gray-400">All 46 Shifts (Hardest First)</p>
         </div>
     </header>
 
-    <div class="bg-[#0B1120] text-white flex overflow-x-auto whitespace-nowrap shrink-0 no-scrollbar" id="section-tabs">
+    <div class="max-w-xl mx-auto p-4 space-y-3" id="shifts-container">
         </div>
-
-    <div class="flex-1 flex relative overflow-hidden">
-        
-        <main class="flex-1 flex flex-col h-full overflow-y-auto bg-white p-4 pb-24 md:pb-20 relative w-full">
-            
-            <div class="flex justify-between items-center border-b border-gray-200 pb-2 mb-4 sticky top-0 bg-white z-10">
-                <div class="flex items-center gap-2">
-                    <span class="font-bold text-[#0B1120] text-lg">Q.<span id="q-num">1</span></span>
-                    <span class="text-xs text-gray-400">Single Choice</span>
-                </div>
-                <div class="flex gap-2 text-[10px] font-bold">
-                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded">+2.0</span>
-                    <span class="bg-red-100 text-red-600 px-2 py-1 rounded">-0.5</span>
-                </div>
-            </div>
-
-            <div class="mb-6 text-gray-900 text-base font-medium leading-relaxed">
-                <p id="q-text" class="text-lg">Select the related word/letters/number from the given alternatives.</p>
-                <p class="font-bold mt-3 text-xl text-[#0B1120]">BVSC : YEHX :: MRCP : ?</p>
-            </div>
-
-            <div class="space-y-3 mb-10" id="options-container">
-                </div>
-        </main>
-
-        <div id="palette-overlay" onclick="togglePalette()" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
-        
-        <aside id="palette" class="palette-drawer closed fixed inset-y-0 right-0 w-[80%] max-w-[300px] bg-white border-l border-gray-300 z-40 md:relative md:w-80 md:flex flex-col shadow-2xl md:shadow-none flex flex-col h-full">
-            
-            <div class="p-3 bg-gray-100 border-b flex justify-between items-center shrink-0">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">U</div>
-                    <span class="font-bold text-sm">John Doe</span>
-                </div>
-                <button onclick="togglePalette()" class="md:hidden text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-
-            <div class="p-2 grid grid-cols-2 gap-2 text-[10px] border-b bg-gray-50 shrink-0">
-                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-green-500 rounded-full"></span> Answered</div>
-                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full"></span> Not Ans</div>
-                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-gray-200 border border-gray-400 rounded-full"></span> Not Visited</div>
-                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-purple-500 rounded-full"></span> Review</div>
-            </div>
-
-            <div class="flex-1 overflow-y-auto p-3">
-                <h4 class="text-xs font-bold mb-2 text-gray-500 uppercase tracking-wide">Question Palette</h4>
-                <div class="grid grid-cols-5 gap-2" id="grid-container">
-                    </div>
-            </div>
-
-            <div class="p-4 border-t bg-gray-50 shrink-0">
-                <button onclick="submitTest()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold shadow-lg text-sm uppercase tracking-wider transition transform active:scale-95">
-                    Submit Test
-                </button>
-            </div>
-        </aside>
-    </div>
-
-    <footer class="bg-white border-t border-gray-300 p-2 flex justify-between items-center fixed bottom-0 w-full z-20 md:static">
-        <div class="flex gap-2">
-            <button class="px-4 py-2 border border-purple-500 text-purple-600 rounded text-xs font-bold hover:bg-purple-50">Review</button>
-            <button onclick="clearRes()" class="px-4 py-2 border border-red-500 text-red-500 rounded text-xs font-bold hover:bg-red-50">Clear</button>
-        </div>
-        <button onclick="saveNext()" class="px-8 py-2.5 bg-green-600 text-white rounded text-sm font-bold shadow-md hover:bg-green-700 active:scale-95 transition">
-            Save & Next <i class="fa-solid fa-angle-right ml-1"></i>
-        </button>
-    </footer>
 
     <script>
-        // --- LOGIC ---
-        const subjects = ['Reasoning', 'GK', 'Quant', 'English'];
-        let currSec = 0;
-        let currQ = 0;
-        let timeLeft = 3600;
+        // Exact Data from your uploaded image (1-46)
+        const shifts = [
+            { id: 1, date: "12 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 99.22, color: "red" },
+            { id: 2, date: "18 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 99.95, color: "red" },
+            { id: 3, date: "15 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 101.08, color: "red" },
+            { id: 4, date: "20 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 101.99, color: "red" },
+            { id: 5, date: "18 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 102.47, color: "red" },
+            { id: 6, date: "16 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 104.04, color: "red" },
+            { id: 7, date: "13 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 104.35, color: "red" },
+            { id: 8, date: "23 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 104.52, color: "red" },
+            { id: 9, date: "14 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 105.18, color: "orange" },
+            { id: 10, date: "13 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 105.21, color: "orange" },
+            { id: 11, date: "16 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 105.50, color: "orange" },
+            { id: 12, date: "24 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 105.72, color: "orange" },
+            { id: 13, date: "12 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 105.94, color: "orange" },
+            { id: 14, date: "13 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 106.49, color: "orange" },
+            { id: 15, date: "12 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 106.50, color: "orange" },
+            { id: 16, date: "16 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 106.66, color: "orange" },
+            { id: 17, date: "20 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 107.63, color: "orange" },
+            { id: 18, date: "14 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 107.84, color: "orange" },
+            { id: 19, date: "25 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 108.22, color: "orange" },
+            { id: 20, date: "15 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 108.39, color: "orange" },
+            { id: 21, date: "21 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 109.35, color: "yellow" },
+            { id: 22, date: "26 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 109.96, color: "yellow" },
+            { id: 23, date: "19 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 110.11, color: "yellow" },
+            { id: 24, date: "17 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 110.20, color: "yellow" },
+            { id: 25, date: "21 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 110.71, color: "yellow" },
+            { id: 26, date: "19 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 110.91, color: "yellow" },
+            { id: 27, date: "20 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 111.51, color: "yellow" },
+            { id: 28, date: "14 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 111.59, color: "yellow" },
+            { id: 29, date: "15 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 111.70, color: "yellow" },
+            { id: 30, date: "23 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 112.69, color: "yellow" },
+            { id: 31, date: "22 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 112.71, color: "yellow" },
+            { id: 32, date: "25 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 112.91, color: "yellow" },
+            { id: 33, date: "17 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 113.25, color: "green" },
+            { id: 34, date: "25 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 113.41, color: "green" },
+            { id: 35, date: "18 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 113.56, color: "green" },
+            { id: 36, date: "22 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 113.66, color: "green" },
+            { id: 37, date: "24 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 113.93, color: "green" },
+            { id: 38, date: "26 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 114.34, color: "green" },
+            { id: 39, date: "24 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 114.45, color: "green" },
+            { id: 40, date: "17 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 115.78, color: "green" },
+            { id: 41, date: "19 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 116.68, color: "green" },
+            { id: 42, date: "22 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 118.29, color: "green" },
+            { id: 43, date: "21 Sep 2025", shift: "Shift-1 (09:00 AM)", avg: 118.36, color: "green" },
+            { id: 44, date: "26 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 119.62, color: "green" },
+            { id: 45, date: "23 Sep 2025", shift: "Shift-2 (12:30 PM)", avg: 119.87, color: "green" },
+            { id: 46, date: "14 Oct 2025", shift: "Shift-2 (12:00 Noon)", avg: 127.85, color: "green" }
+        ];
 
-        // Create 25 questions per section
-        const data = subjects.map(() => Array.from({length: 25}, (_, i) => ({
-            id: i+1, status: 'not-visited', marked: null
-        })));
+        const container = document.getElementById('shifts-container');
 
-        function init() {
-            renderTabs();
-            renderGrid();
-            loadQuestion();
-            setInterval(timerLoop, 1000);
-        }
-
-        function renderTabs() {
-            const tabs = document.getElementById('section-tabs');
-            tabs.innerHTML = subjects.map((s, i) => `
-                <button onclick="changeSec(${i})" class="px-5 py-3 text-sm font-medium border-b-4 transition-colors ${i===currSec ? 'border-[#D4AF37] text-[#D4AF37] bg-gray-900' : 'border-transparent text-gray-400 hover:text-white'}">
-                    ${s}
-                </button>
-            `).join('');
-        }
-
-        function renderGrid() {
-            const grid = document.getElementById('grid-container');
-            grid.innerHTML = data[currSec].map((q, i) => {
-                let color = 'bg-gray-200 text-gray-600 border border-gray-300'; // Default
-                if(q.status === 'answered') color = 'bg-green-500 text-white border-green-600';
-                if(q.status === 'not-answered') color = 'bg-red-500 text-white border-red-600';
-                if(i === currQ) color += ' ring-2 ring-blue-500 ring-offset-1'; // Active Focus
-                
-                return `<div onclick="jumpTo(${i})" class="h-9 w-9 rounded-md flex items-center justify-center text-xs font-bold cursor-pointer ${color}">${q.id}</div>`;
-            }).join('');
-        }
-
-        function loadQuestion() {
-            const q = data[currSec][currQ];
-            document.getElementById('q-num').innerText = q.id;
+        shifts.forEach(s => {
+            const badgeClass = s.color === 'red' ? 'bg-red-100 text-red-700' : 
+                             (s.color === 'orange' ? 'bg-orange-100 text-orange-800' : 
+                             (s.color === 'yellow' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-700'));
             
-            const opts = document.getElementById('options-container');
-            opts.innerHTML = ['A', 'B', 'C', 'D'].map(opt => `
-                <label class="cursor-pointer block relative group">
-                    <input type="radio" name="opt" class="hidden opt-radio" value="${opt}" ${q.marked === opt ? 'checked' : ''}>
-                    <div class="flex items-center p-3 rounded-lg border border-gray-300 hover:border-blue-400 transition bg-white group-active:bg-gray-50">
-                        <span class="circle-id w-6 h-6 rounded-full border border-gray-400 mr-3 flex items-center justify-center font-bold text-xs text-gray-500 bg-gray-100">${opt}</span>
-                        <span class="text-sm font-medium text-gray-700">Option ${opt} Text</span>
+            const borderClass = s.color === 'red' ? 'border-l-red-500' : 
+                              (s.color === 'orange' ? 'border-l-orange-500' : 
+                              (s.color === 'yellow' ? 'border-l-yellow-500' : 'border-l-green-500'));
+
+            container.innerHTML += `
+                <a href="test.html" onclick="localStorage.setItem('examShift', '${s.date} | ${s.shift}')" 
+                   class="block bg-white p-4 rounded-lg shadow-sm border border-gray-200 border-l-4 ${borderClass} hover:shadow-md transition group">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-gray-800 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">${s.id}</span>
+                            <span class="font-bold text-gray-800 text-lg">${s.date}</span>
+                        </div>
+                        <span class="text-xs font-mono font-bold px-2 py-1 rounded ${badgeClass}">Avg: ${s.avg}</span>
                     </div>
-                </label>
-            `).join('');
-
-            if(q.status === 'not-visited') {
-                q.status = 'not-answered';
-                renderGrid();
-            }
-        }
-
-        function saveNext() {
-            const sel = document.querySelector('input[name="opt"]:checked');
-            if(sel) {
-                data[currSec][currQ].status = 'answered';
-                data[currSec][currQ].marked = sel.value;
-            } else {
-                data[currSec][currQ].status = 'not-answered';
-            }
-            
-            if(currQ < 24) currQ++;
-            loadQuestion();
-            renderGrid();
-        }
-
-        function clearRes() {
-            data[currSec][currQ].status = 'not-answered';
-            data[currSec][currQ].marked = null;
-            document.querySelectorAll('input').forEach(i => i.checked = false);
-            renderGrid();
-        }
-
-        function changeSec(i) { currSec = i; currQ = 0; renderTabs(); loadQuestion(); renderGrid(); }
-        function jumpTo(i) { currQ = i; loadQuestion(); renderGrid(); }
-
-        function togglePalette() {
-            const p = document.getElementById('palette');
-            const o = document.getElementById('palette-overlay');
-            p.classList.toggle('closed');
-            o.classList.toggle('hidden');
-        }
-
-        function timerLoop() {
-            if(timeLeft > 0) {
-                timeLeft--;
-                let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-                let s = (timeLeft % 60).toString().padStart(2, '0');
-                document.getElementById('timer').innerText = `${m}:${s}`;
-            } else {
-                submitTest();
-            }
-        }
-
-        function submitTest() {
-            if(confirm("Are you sure you want to submit?")) {
-                localStorage.setItem('finalResult', JSON.stringify(data));
-                window.location.href = 'analysis.html';
-            }
-        }
-
-        init();
+                    <div class="flex justify-between items-center text-sm text-gray-500 ml-9">
+                        <span><i class="fa-regular fa-clock mr-1"></i> ${s.shift}</span>
+                        <button class="bg-[#0B1120] text-white px-4 py-1.5 rounded text-xs font-bold group-hover:bg-[#E25822] transition uppercase tracking-wider">Attempt</button>
+                    </div>
+                </a>
+            `;
+        });
     </script>
 </body>
 </html>
