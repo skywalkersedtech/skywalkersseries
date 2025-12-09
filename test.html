@@ -7,202 +7,219 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Hide scrollbar but allow scroll */
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .palette-drawer { transition: transform 0.3s ease; }
-        .palette-drawer.open { transform: translateX(0); }
-        .opt-radio:checked + div { background-color: #eff6ff; border-color: #3b82f6; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Palette Drawer Transition */
+        .palette-drawer { transition: transform 0.3s ease-in-out; }
+        .palette-drawer.closed { transform: translateX(100%); } /* Hidden on Mobile */
+        
+        /* Desktop: Always visible */
+        @media (min-width: 768px) {
+            .palette-drawer.closed { transform: translateX(0); }
+        }
+
+        /* Radio Button Styling */
+        .opt-radio:checked + div { background-color: #eff6ff; border-color: #3b82f6; border-width: 2px; }
+        .opt-radio:checked + div .circle-id { background-color: #3b82f6; color: white; border-color: #3b82f6; }
     </style>
 </head>
-<body class="bg-gray-100 h-screen flex flex-col select-none overflow-hidden">
+<body class="bg-gray-100 h-screen flex flex-col select-none overflow-hidden font-sans">
 
-    <header class="bg-white border-b h-14 flex justify-between items-center px-3 shrink-0">
-        <div class="font-bold text-[#0B1120]">FIRE<span class="text-[#D4AF37]">WALKERS</span></div>
+    <header class="bg-white border-b border-gray-300 h-14 flex justify-between items-center px-3 shrink-0 z-20">
+        <div class="flex items-center gap-2">
+            <div class="font-bold text-[#0B1120] text-lg">FIRE<span class="text-[#D4AF37]">WALKERS</span></div>
+        </div>
         <div class="flex items-center gap-3">
-            <div class="bg-gray-100 px-2 py-1 rounded text-sm font-bold border">
-                Time Left: <span id="timer" class="text-red-600">60:00</span>
+            <div class="bg-gray-800 text-white px-3 py-1 rounded text-sm font-mono border border-gray-600 flex items-center gap-2">
+                <i class="fa-regular fa-clock text-[#D4AF37]"></i>
+                <span id="timer">59:59</span>
             </div>
-            <button onclick="togglePalette()" class="md:hidden text-[#0B1120]"><i class="fa-solid fa-grid-2 text-xl"></i></button>
+            <button onclick="togglePalette()" class="md:hidden text-[#0B1120] bg-gray-200 p-2 rounded hover:bg-gray-300">
+                <i class="fa-solid fa-border-all text-xl"></i>
+            </button>
         </div>
     </header>
 
-    <div class="bg-[#0B1120] text-white flex overflow-x-auto whitespace-nowrap shrink-0 no-scrollbar" id="sections">
+    <div class="bg-[#0B1120] text-white flex overflow-x-auto whitespace-nowrap shrink-0 no-scrollbar" id="section-tabs">
         </div>
 
     <div class="flex-1 flex relative overflow-hidden">
-        <main class="flex-1 flex flex-col h-full overflow-y-auto bg-white p-4 pb-24">
+        
+        <main class="flex-1 flex flex-col h-full overflow-y-auto bg-white p-4 pb-24 md:pb-20 relative w-full">
             
-            <div class="flex justify-between items-center border-b pb-2 mb-4 sticky top-0 bg-white z-10">
-                <div class="flex gap-2 items-center">
-                    <span class="font-bold text-red-600">Q.<span id="q-num">1</span></span>
-                    <span class="text-xs text-gray-400" id="q-time">⏱️ 0s</span>
+            <div class="flex justify-between items-center border-b border-gray-200 pb-2 mb-4 sticky top-0 bg-white z-10">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-[#0B1120] text-lg">Q.<span id="q-num">1</span></span>
+                    <span class="text-xs text-gray-400">Single Choice</span>
                 </div>
-                <div class="text-[10px] font-bold flex gap-2">
-                    <span class="text-green-600 bg-green-50 px-1 rounded">+2.0</span>
-                    <span class="text-red-600 bg-red-50 px-1 rounded">-0.5</span>
+                <div class="flex gap-2 text-[10px] font-bold">
+                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded">+2.0</span>
+                    <span class="bg-red-100 text-red-600 px-2 py-1 rounded">-0.5</span>
                 </div>
             </div>
 
-            <div id="q-content" class="mb-6 text-sm font-medium">
-                </div>
+            <div class="mb-6 text-gray-900 text-base font-medium leading-relaxed">
+                <p id="q-text" class="text-lg">Select the related word/letters/number from the given alternatives.</p>
+                <p class="font-bold mt-3 text-xl text-[#0B1120]">BVSC : YEHX :: MRCP : ?</p>
+            </div>
 
-            <div id="options" class="space-y-3">
+            <div class="space-y-3 mb-10" id="options-container">
                 </div>
         </main>
 
-        <aside id="palette" class="palette-drawer fixed inset-y-0 right-0 w-3/4 max-w-xs bg-white border-l z-50 transform translate-x-full md:relative md:translate-x-0 md:w-80 flex flex-col">
-            <div class="p-3 bg-gray-100 border-b flex justify-between">
-                <span class="font-bold text-sm">Overview</span>
-                <button onclick="togglePalette()" class="md:hidden"><i class="fa-solid fa-xmark"></i></button>
+        <div id="palette-overlay" onclick="togglePalette()" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
+        
+        <aside id="palette" class="palette-drawer closed fixed inset-y-0 right-0 w-[80%] max-w-[300px] bg-white border-l border-gray-300 z-40 md:relative md:w-80 md:flex flex-col shadow-2xl md:shadow-none flex flex-col h-full">
+            
+            <div class="p-3 bg-gray-100 border-b flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">U</div>
+                    <span class="font-bold text-sm">John Doe</span>
+                </div>
+                <button onclick="togglePalette()" class="md:hidden text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <div class="p-2 grid grid-cols-2 gap-2 text-[10px] border-b">
+
+            <div class="p-2 grid grid-cols-2 gap-2 text-[10px] border-b bg-gray-50 shrink-0">
                 <div class="flex items-center gap-1"><span class="w-3 h-3 bg-green-500 rounded-full"></span> Answered</div>
-                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full"></span> Not Answered</div>
-                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-gray-200 border rounded-full"></span> Not Visited</div>
+                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full"></span> Not Ans</div>
+                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-gray-200 border border-gray-400 rounded-full"></span> Not Visited</div>
+                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-purple-500 rounded-full"></span> Review</div>
             </div>
+
             <div class="flex-1 overflow-y-auto p-3">
-                <div class="grid grid-cols-5 gap-2" id="grid"></div>
+                <h4 class="text-xs font-bold mb-2 text-gray-500 uppercase tracking-wide">Question Palette</h4>
+                <div class="grid grid-cols-5 gap-2" id="grid-container">
+                    </div>
             </div>
-            <div class="p-3 border-t">
-                <button onclick="submitTest()" class="w-full bg-[#0B1120] text-white py-2 rounded font-bold">SUBMIT</button>
+
+            <div class="p-4 border-t bg-gray-50 shrink-0">
+                <button onclick="submitTest()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold shadow-lg text-sm uppercase tracking-wider transition transform active:scale-95">
+                    Submit Test
+                </button>
             </div>
         </aside>
     </div>
 
-    <footer class="bg-white border-t p-2 flex justify-between fixed bottom-0 w-full z-40 md:static">
-        <button onclick="clearRes()" class="px-4 py-2 border border-red-500 text-red-500 rounded text-sm font-bold">Clear</button>
-        <button onclick="saveNext()" class="px-8 py-2 bg-green-600 text-white rounded text-sm font-bold shadow">Save & Next</button>
+    <footer class="bg-white border-t border-gray-300 p-2 flex justify-between items-center fixed bottom-0 w-full z-20 md:static">
+        <div class="flex gap-2">
+            <button class="px-4 py-2 border border-purple-500 text-purple-600 rounded text-xs font-bold hover:bg-purple-50">Review</button>
+            <button onclick="clearRes()" class="px-4 py-2 border border-red-500 text-red-500 rounded text-xs font-bold hover:bg-red-50">Clear</button>
+        </div>
+        <button onclick="saveNext()" class="px-8 py-2.5 bg-green-600 text-white rounded text-sm font-bold shadow-md hover:bg-green-700 active:scale-95 transition">
+            Save & Next <i class="fa-solid fa-angle-right ml-1"></i>
+        </button>
     </footer>
 
     <script>
-        // --- DATA & STATE ---
-        const sections = ['Reasoning', 'GK', 'Quant', 'English'];
+        // --- LOGIC ---
+        const subjects = ['Reasoning', 'GK', 'Quant', 'English'];
         let currSec = 0;
         let currQ = 0;
-        let time = 3600; // 60 mins
-        
-        // Mock 100 Questions
-        const data = sections.map(s => Array.from({length: 25}, (_, i) => ({
-            id: i+1, 
-            text: `Sample Question ${i+1} for ${s}`,
-            status: 'not-visited', // not-visited, not-answered (red), answered (green)
-            marked: null,
-            timeSpent: 0
+        let timeLeft = 3600;
+
+        // Create 25 questions per section
+        const data = subjects.map(() => Array.from({length: 25}, (_, i) => ({
+            id: i+1, status: 'not-visited', marked: null
         })));
 
-        // --- INIT ---
         function init() {
             renderTabs();
+            renderGrid();
             loadQuestion();
-            renderPalette();
-            setInterval(tick, 1000);
+            setInterval(timerLoop, 1000);
         }
 
-        // --- RENDER FUNCTIONS ---
         function renderTabs() {
-            const container = document.getElementById('sections');
-            container.innerHTML = sections.map((s, i) => `
-                <button onclick="changeSec(${i})" class="px-4 py-3 text-sm font-medium ${i===currSec ? 'bg-white text-blue-600 border-t-2 border-blue-600' : 'opacity-70 hover:opacity-100'}">
+            const tabs = document.getElementById('section-tabs');
+            tabs.innerHTML = subjects.map((s, i) => `
+                <button onclick="changeSec(${i})" class="px-5 py-3 text-sm font-medium border-b-4 transition-colors ${i===currSec ? 'border-[#D4AF37] text-[#D4AF37] bg-gray-900' : 'border-transparent text-gray-400 hover:text-white'}">
                     ${s}
                 </button>
             `).join('');
         }
 
+        function renderGrid() {
+            const grid = document.getElementById('grid-container');
+            grid.innerHTML = data[currSec].map((q, i) => {
+                let color = 'bg-gray-200 text-gray-600 border border-gray-300'; // Default
+                if(q.status === 'answered') color = 'bg-green-500 text-white border-green-600';
+                if(q.status === 'not-answered') color = 'bg-red-500 text-white border-red-600';
+                if(i === currQ) color += ' ring-2 ring-blue-500 ring-offset-1'; // Active Focus
+                
+                return `<div onclick="jumpTo(${i})" class="h-9 w-9 rounded-md flex items-center justify-center text-xs font-bold cursor-pointer ${color}">${q.id}</div>`;
+            }).join('');
+        }
+
         function loadQuestion() {
             const q = data[currSec][currQ];
             document.getElementById('q-num').innerText = q.id;
-            document.getElementById('q-content').innerText = q.text;
-            document.getElementById('q-time').innerText = `⏱️ ${q.timeSpent}s`;
             
-            // Render Options
-            const opts = document.getElementById('options');
+            const opts = document.getElementById('options-container');
             opts.innerHTML = ['A', 'B', 'C', 'D'].map(opt => `
-                <label class="cursor-pointer block">
+                <label class="cursor-pointer block relative group">
                     <input type="radio" name="opt" class="hidden opt-radio" value="${opt}" ${q.marked === opt ? 'checked' : ''}>
-                    <div class="flex items-center p-3 rounded border hover:bg-gray-50">
-                        <span class="w-6 h-6 rounded-full border mr-3 flex items-center justify-center text-xs font-bold">${opt}</span>
-                        <span>Option Text ${opt}</span>
+                    <div class="flex items-center p-3 rounded-lg border border-gray-300 hover:border-blue-400 transition bg-white group-active:bg-gray-50">
+                        <span class="circle-id w-6 h-6 rounded-full border border-gray-400 mr-3 flex items-center justify-center font-bold text-xs text-gray-500 bg-gray-100">${opt}</span>
+                        <span class="text-sm font-medium text-gray-700">Option ${opt} Text</span>
                     </div>
                 </label>
             `).join('');
 
-            // If visiting for first time, mark as Not Answered (Red) unless already Answered (Green)
             if(q.status === 'not-visited') {
                 q.status = 'not-answered';
-                renderPalette();
+                renderGrid();
             }
         }
 
-        function renderPalette() {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = data[currSec].map((q, i) => {
-                let color = 'bg-gray-200 text-gray-600'; // Default
-                if (q.status === 'answered') color = 'bg-green-500 text-white';
-                else if (q.status === 'not-answered') color = 'bg-red-500 text-white';
-                
-                let border = i === currQ ? 'border-2 border-black' : '';
-                
-                return `<div onclick="jumpTo(${i})" class="h-8 w-8 rounded flex items-center justify-center text-xs font-bold cursor-pointer ${color} ${border}">${q.id}</div>`;
-            }).join('');
-        }
-
-        // --- ACTIONS ---
         function saveNext() {
-            const selected = document.querySelector('input[name="opt"]:checked');
-            const q = data[currSec][currQ];
-            
-            if (selected) {
-                q.status = 'answered'; // Green
-                q.marked = selected.value;
+            const sel = document.querySelector('input[name="opt"]:checked');
+            if(sel) {
+                data[currSec][currQ].status = 'answered';
+                data[currSec][currQ].marked = sel.value;
             } else {
-                q.status = 'not-answered'; // Red if skipped
+                data[currSec][currQ].status = 'not-answered';
             }
-
-            if (currQ < 24) currQ++;
+            
+            if(currQ < 24) currQ++;
             loadQuestion();
-            renderPalette();
+            renderGrid();
         }
 
         function clearRes() {
-            const q = data[currSec][currQ];
-            q.marked = null;
-            q.status = 'not-answered';
+            data[currSec][currQ].status = 'not-answered';
+            data[currSec][currQ].marked = null;
             document.querySelectorAll('input').forEach(i => i.checked = false);
-            renderPalette();
+            renderGrid();
         }
 
-        function changeSec(i) {
-            currSec = i;
-            currQ = 0;
-            renderTabs();
-            loadQuestion();
-            renderPalette();
+        function changeSec(i) { currSec = i; currQ = 0; renderTabs(); loadQuestion(); renderGrid(); }
+        function jumpTo(i) { currQ = i; loadQuestion(); renderGrid(); }
+
+        function togglePalette() {
+            const p = document.getElementById('palette');
+            const o = document.getElementById('palette-overlay');
+            p.classList.toggle('closed');
+            o.classList.toggle('hidden');
         }
 
-        function jumpTo(i) {
-            currQ = i;
-            loadQuestion();
-            renderPalette();
-        }
-
-        function tick() {
-            if (time > 0) {
-                time--;
-                data[currSec][currQ].timeSpent++;
-                document.getElementById('q-time').innerText = `⏱️ ${data[currSec][currQ].timeSpent}s`;
-                
-                let m = Math.floor(time / 60).toString().padStart(2, '0');
-                let s = (time % 60).toString().padStart(2, '0');
+        function timerLoop() {
+            if(timeLeft > 0) {
+                timeLeft--;
+                let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                let s = (timeLeft % 60).toString().padStart(2, '0');
                 document.getElementById('timer').innerText = `${m}:${s}`;
+            } else {
+                submitTest();
             }
         }
 
-        function togglePalette() {
-            document.getElementById('palette').classList.toggle('translate-x-full');
-        }
-
         function submitTest() {
-            localStorage.setItem('testData', JSON.stringify(data));
-            window.location.href = 'analysis.html';
+            if(confirm("Are you sure you want to submit?")) {
+                localStorage.setItem('finalResult', JSON.stringify(data));
+                window.location.href = 'analysis.html';
+            }
         }
 
         init();
