@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Exam Interface</title>
+    <title>Exam Interface - FIREWALKERS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Smooth Scrolling & Scrollbar hiding */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
+        /* Mobile Palette Drawer Animation */
         .palette-drawer { transition: transform 0.3s ease-in-out; }
         .palette-drawer.closed { transform: translateX(100%); }
         
+        /* Desktop: Always visible */
         @media (min-width: 768px) {
             .palette-drawer.closed { transform: translateX(0); }
         }
 
+        /* Radio Button Styling */
         .opt-radio:checked + div { background-color: #eff6ff; border-color: #3b82f6; border-width: 2px; }
         .opt-radio:checked + div .circle-id { background-color: #3b82f6; color: white; border-color: #3b82f6; }
     </style>
@@ -57,8 +61,7 @@
             </div>
 
             <div id="q-content" class="text-gray-900 text-base font-medium leading-relaxed">
-                <p id="q-text" class="text-lg">Select the related word/letters/number from the given alternatives.</p>
-                <p class="font-bold mt-3 text-xl text-[#0B1120]">BVSC : YEHX :: MRCP : ?</p>
+                <p id="q-text" class="text-lg">Loading Question...</p>
             </div>
 
             <div class="mt-6 mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl flex flex-col gap-2 shadow-sm">
@@ -66,7 +69,7 @@
                     <i class="fa-solid fa-circle-info text-yellow-600 mt-1"></i>
                     <p class="text-xs text-gray-600 leading-relaxed">
                         <span class="font-bold text-gray-800">Formatting Issue?</span>
-                        Bhai, hosting aur typing ke paise nahi hain, isliye questions raw format mein hain. Hum free mein best content dene ki koshish kar rahe hain.
+                        Web hosting ke lie paise nhi hai hamare paas islie ye question sahi se nahi lag paya, free mee kaam kr rhe hain.
                     </p>
                 </div>
                 <div class="ml-7">
@@ -82,10 +85,11 @@
         <div id="palette-overlay" onclick="togglePalette()" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
         
         <aside id="palette" class="palette-drawer closed fixed inset-y-0 right-0 w-[80%] max-w-[300px] bg-white border-l border-gray-300 z-40 md:relative md:w-80 md:flex flex-col shadow-2xl md:shadow-none flex flex-col h-full">
+            
             <div class="p-3 bg-gray-100 border-b flex justify-between items-center shrink-0">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">U</div>
-                    <span class="font-bold text-sm">John Doe</span>
+                    <span class="font-bold text-sm">User</span>
                 </div>
                 <button onclick="togglePalette()" class="md:hidden text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
@@ -99,7 +103,8 @@
 
             <div class="flex-1 overflow-y-auto p-3">
                 <h4 class="text-xs font-bold mb-2 text-gray-500 uppercase tracking-wide">Question Palette</h4>
-                <div class="grid grid-cols-5 gap-2" id="grid-container"></div>
+                <div class="grid grid-cols-5 gap-2" id="grid-container">
+                    </div>
             </div>
 
             <div class="p-4 border-t bg-gray-50 shrink-0">
@@ -120,26 +125,57 @@
         </button>
     </footer>
 
+    <script src="questions.js"></script> 
+
     <script>
-        const subjects = ['Reasoning', 'GK', 'Quant', 'English'];
-        let currSec = 0;
-        let currQ = 0;
-        let timeLeft = 3600;
+        // --- 1. STATE MANAGEMENT ---
+        const sectionNames = ['Reasoning', 'GK', 'Quant', 'English'];
+        let sectionsData = [[], [], [], []]; // Array of arrays for 4 sections
+        let currSec = 0; // 0=Reas, 1=GK, 2=Quant, 3=Eng
+        let currQ = 0; // Question index in current section
+        let timeLeft = 3600; // 60 mins
 
-        const data = subjects.map(() => Array.from({length: 25}, (_, i) => ({
-            id: i+1, status: 'not-visited', marked: null
-        })));
-
-        function init() {
+        // --- 2. INITIALIZATION ---
+        window.onload = function() {
+            loadData();
             renderTabs();
             renderGrid();
             loadQuestion();
             setInterval(timerLoop, 1000);
+        };
+
+        // --- 3. LOAD DATA FROM JSON FILE ---
+        function loadData() {
+            // Check selected shift from previous page
+            const selectedShift = localStorage.getItem('examShift') || "Demo Shift";
+            
+            // Try to find data in allExamData (from questions.js)
+            let rawData = [];
+            if (typeof allExamData !== 'undefined' && allExamData[selectedShift]) {
+                rawData = allExamData[selectedShift];
+            } else {
+                console.log("No data found for shift, loading Dummy Data");
+                // Dummy Data Generator (Fallback if file not ready)
+                rawData = Array.from({length: 100}, (_, i) => ({
+                    id: i+1, 
+                    section: i < 25 ? "Reasoning" : (i < 50 ? "GK" : (i < 75 ? "Quant" : "English")),
+                    text: `Sample Question ${i+1} for ${selectedShift}. (Actual content uploading soon...)`,
+                    options: ["Option A", "Option B", "Option C", "Option D"],
+                    correct: "A"
+                }));
+            }
+
+            // Organize into sections
+            sectionsData[0] = rawData.filter(q => q.section === "Reasoning").map(q => ({...q, status: 'not-visited', marked: null}));
+            sectionsData[1] = rawData.filter(q => q.section === "GK").map(q => ({...q, status: 'not-visited', marked: null}));
+            sectionsData[2] = rawData.filter(q => q.section === "Quant").map(q => ({...q, status: 'not-visited', marked: null}));
+            sectionsData[3] = rawData.filter(q => q.section === "English").map(q => ({...q, status: 'not-visited', marked: null}));
         }
 
+        // --- 4. RENDER FUNCTIONS ---
         function renderTabs() {
             const tabs = document.getElementById('section-tabs');
-            tabs.innerHTML = subjects.map((s, i) => `
+            tabs.innerHTML = sectionNames.map((s, i) => `
                 <button onclick="changeSec(${i})" class="px-5 py-3 text-sm font-medium border-b-4 transition-colors ${i===currSec ? 'border-[#D4AF37] text-[#D4AF37] bg-gray-900' : 'border-transparent text-gray-400 hover:text-white'}">
                     ${s}
                 </button>
@@ -148,66 +184,85 @@
 
         function renderGrid() {
             const grid = document.getElementById('grid-container');
-            grid.innerHTML = data[currSec].map((q, i) => {
+            grid.innerHTML = sectionsData[currSec].map((q, i) => {
                 let color = 'bg-gray-200 text-gray-600 border border-gray-300';
                 if(q.status === 'answered') color = 'bg-green-500 text-white border-green-600';
                 if(q.status === 'not-answered') color = 'bg-red-500 text-white border-red-600';
-                let border = i === currQ ? 'ring-2 ring-blue-500 ring-offset-1' : '';
-                return `<div onclick="jumpTo(${i})" class="h-9 w-9 rounded-md flex items-center justify-center text-xs font-bold cursor-pointer ${color} ${border}">${q.id}</div>`;
+                
+                let activeClass = i === currQ ? 'ring-2 ring-blue-500 ring-offset-1' : '';
+                
+                return `<div onclick="jumpTo(${i})" class="h-9 w-9 rounded-md flex items-center justify-center text-xs font-bold cursor-pointer ${color} ${activeClass}">${i+1}</div>`;
             }).join('');
         }
 
         function loadQuestion() {
-            const q = data[currSec][currQ];
-            document.getElementById('q-num').innerText = q.id;
+            // Safe check
+            if (!sectionsData[currSec] || !sectionsData[currSec][currQ]) return;
+
+            const q = sectionsData[currSec][currQ];
+            document.getElementById('q-num').innerText = currQ + 1;
+            document.getElementById('q-content').innerHTML = `<p class="font-medium text-lg leading-relaxed">${q.text}</p>`;
             
             const opts = document.getElementById('options-container');
-            opts.innerHTML = ['A', 'B', 'C', 'D'].map(opt => `
+            const labels = ['A', 'B', 'C', 'D'];
+            
+            opts.innerHTML = q.options.map((optText, idx) => `
                 <label class="cursor-pointer block relative group">
-                    <input type="radio" name="opt" class="hidden opt-radio" value="${opt}" ${q.marked === opt ? 'checked' : ''}>
+                    <input type="radio" name="opt" class="hidden opt-radio" value="${labels[idx]}" ${q.marked === labels[idx] ? 'checked' : ''}>
                     <div class="flex items-center p-3 rounded-lg border border-gray-300 hover:border-blue-400 transition bg-white group-active:bg-gray-50">
-                        <span class="circle-id w-6 h-6 rounded-full border border-gray-400 mr-3 flex items-center justify-center font-bold text-xs text-gray-500 bg-gray-100">${opt}</span>
-                        <span class="text-sm font-medium text-gray-700">Option ${opt} Text</span>
+                        <span class="circle-id w-6 h-6 rounded-full border border-gray-400 mr-3 flex items-center justify-center font-bold text-xs text-gray-500 bg-gray-100">${labels[idx]}</span>
+                        <span class="text-sm font-medium text-gray-700 w-full">${optText}</span>
                     </div>
                 </label>
             `).join('');
 
+            // Mark visited logic
             if(q.status === 'not-visited') {
                 q.status = 'not-answered';
                 renderGrid();
             }
         }
 
+        // --- 5. INTERACTION LOGIC ---
         function saveNext() {
             const sel = document.querySelector('input[name="opt"]:checked');
             if(sel) {
-                data[currSec][currQ].status = 'answered';
-                data[currSec][currQ].marked = sel.value;
+                sectionsData[currSec][currQ].status = 'answered';
+                sectionsData[currSec][currQ].marked = sel.value;
             } else {
-                data[currSec][currQ].status = 'not-answered';
+                sectionsData[currSec][currQ].status = 'not-answered';
             }
-            if(currQ < 24) currQ++;
+            
+            // Move to next question
+            if(currQ < sectionsData[currSec].length - 1) {
+                currQ++;
+            }
             loadQuestion();
             renderGrid();
         }
 
         function clearRes() {
-            data[currSec][currQ].status = 'not-answered';
-            data[currSec][currQ].marked = null;
+            sectionsData[currSec][currQ].status = 'not-answered';
+            sectionsData[currSec][currQ].marked = null;
             document.querySelectorAll('input').forEach(i => i.checked = false);
             renderGrid();
         }
 
-        function changeSec(i) { currSec = i; currQ = 0; renderTabs(); loadQuestion(); renderGrid(); }
-        function jumpTo(i) { currQ = i; loadQuestion(); renderGrid(); }
-
-        function togglePalette() {
-            const p = document.getElementById('palette');
-            const o = document.getElementById('palette-overlay');
-            p.classList.toggle('closed');
-            o.classList.toggle('hidden');
+        function changeSec(i) {
+            currSec = i;
+            currQ = 0;
+            renderTabs();
+            loadQuestion();
+            renderGrid();
         }
 
+        function jumpTo(i) {
+            currQ = i;
+            loadQuestion();
+            renderGrid();
+        }
+
+        // --- 6. UTILITIES ---
         function timerLoop() {
             if(timeLeft > 0) {
                 timeLeft--;
@@ -219,14 +274,23 @@
             }
         }
 
+        function togglePalette() {
+            const p = document.getElementById('palette');
+            const o = document.getElementById('palette-overlay');
+            p.classList.toggle('closed');
+            o.classList.toggle('hidden');
+        }
+
         function submitTest() {
             if(confirm("Are you sure you want to submit?")) {
-                localStorage.setItem('finalResult', JSON.stringify(data));
+                // Flatten data for analysis
+                const finalData = [
+                    sectionsData[0], sectionsData[1], sectionsData[2], sectionsData[3]
+                ];
+                localStorage.setItem('finalResult', JSON.stringify(finalData));
                 window.location.href = 'analysis.html';
             }
         }
-
-        init();
     </script>
 </body>
 </html>
