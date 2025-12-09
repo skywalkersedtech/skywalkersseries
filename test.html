@@ -11,13 +11,15 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Mobile Palette Drawer Animation */
+        /* Palette Drawer Transition */
         .palette-drawer { transition: transform 0.3s ease-in-out; }
-        .palette-drawer.closed { transform: translateX(100%); }
         
-        /* Desktop: Always visible */
+        /* Mobile: Hidden by default (translated right) */
+        .palette-closed-mobile { transform: translateX(100%); } 
+        
+        /* Desktop: Always visible (reset transform) */
         @media (min-width: 768px) {
-            .palette-drawer.closed { transform: translateX(0); }
+            .palette-closed-mobile { transform: translateX(0) !important; }
         }
 
         /* Radio Button Styling */
@@ -27,7 +29,7 @@
 </head>
 <body class="bg-gray-100 h-screen flex flex-col select-none overflow-hidden font-sans">
 
-    <header class="bg-white border-b border-gray-300 h-14 flex justify-between items-center px-3 shrink-0 z-20">
+    <header class="bg-white border-b border-gray-300 h-14 flex justify-between items-center px-3 shrink-0 z-50">
         <div class="flex items-center gap-2">
             <div class="font-bold text-[#0B1120] text-lg">FIRE<span class="text-[#D4AF37]">WALKERS</span></div>
         </div>
@@ -47,7 +49,7 @@
 
     <div class="flex-1 flex relative overflow-hidden">
         
-        <main class="flex-1 flex flex-col h-full overflow-y-auto bg-white p-4 pb-24 md:pb-20 relative w-full">
+        <main class="flex-1 flex flex-col h-full overflow-y-auto bg-white p-4 pb-32 md:pb-24 relative w-full">
             
             <div class="flex justify-between items-center border-b border-gray-200 pb-2 mb-4 sticky top-0 bg-white z-10">
                 <div class="flex items-center gap-2">
@@ -69,7 +71,7 @@
                     <i class="fa-solid fa-circle-info text-yellow-600 mt-1"></i>
                     <p class="text-xs text-gray-600 leading-relaxed">
                         <span class="font-bold text-gray-800">Formatting Issue?</span>
-                        Web hosting ke lie paise nhi hai hamare paas islie ye question sahi se nahi lag paya, free mee kaam kr rhe hain.
+                        Hosting ke paise nahi hain isliye questions raw format mein hain. Hum free mein best content dene ki koshish kar rahe hain.
                     </p>
                 </div>
                 <div class="ml-7">
@@ -84,12 +86,12 @@
 
         <div id="palette-overlay" onclick="togglePalette()" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
         
-        <aside id="palette" class="palette-drawer closed fixed inset-y-0 right-0 w-[80%] max-w-[300px] bg-white border-l border-gray-300 z-40 md:relative md:w-80 md:flex flex-col shadow-2xl md:shadow-none flex flex-col h-full">
+        <aside id="palette" class="palette-drawer palette-closed-mobile fixed inset-y-0 right-0 w-[85%] max-w-[320px] bg-white border-l border-gray-300 z-40 md:relative md:w-80 md:flex flex-col shadow-2xl md:shadow-none flex flex-col h-full">
             
             <div class="p-3 bg-gray-100 border-b flex justify-between items-center shrink-0">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">U</div>
-                    <span class="font-bold text-sm">User</span>
+                    <span class="font-bold text-sm">Candidate</span>
                 </div>
                 <button onclick="togglePalette()" class="md:hidden text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
@@ -115,14 +117,25 @@
         </aside>
     </div>
 
-    <footer class="bg-white border-t border-gray-300 p-2 flex justify-between items-center fixed bottom-0 w-full z-20 md:static">
+    <footer class="bg-white border-t border-gray-300 p-2 flex justify-between items-center fixed bottom-0 w-full z-40 md:static shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        
         <div class="flex gap-2">
-            <button class="px-4 py-2 border border-purple-500 text-purple-600 rounded text-xs font-bold hover:bg-purple-50">Review</button>
-            <button onclick="clearRes()" class="px-4 py-2 border border-red-500 text-red-500 rounded text-xs font-bold hover:bg-red-50">Clear</button>
+            <button onclick="prevQuestion()" class="px-3 py-2.5 border border-gray-400 text-gray-700 rounded-lg text-xs font-bold hover:bg-gray-100 flex items-center gap-1">
+                <i class="fa-solid fa-angle-left"></i> Prev
+            </button>
+            <button onclick="markForReview()" class="px-3 py-2.5 border border-purple-500 text-purple-600 rounded-lg text-xs font-bold hover:bg-purple-50 hidden sm:block">
+                Review
+            </button>
         </div>
-        <button onclick="saveNext()" class="px-8 py-2.5 bg-green-600 text-white rounded text-sm font-bold shadow-md hover:bg-green-700 active:scale-95 transition">
-            Save & Next <i class="fa-solid fa-angle-right ml-1"></i>
-        </button>
+
+        <div class="flex gap-2">
+            <button onclick="clearRes()" class="px-3 py-2.5 border border-red-500 text-red-500 rounded-lg text-xs font-bold hover:bg-red-50">
+                Clear
+            </button>
+            <button onclick="saveNext()" class="px-6 py-2.5 bg-green-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-green-700 active:scale-95 transition flex items-center gap-1">
+                Save & Next <i class="fa-solid fa-angle-right"></i>
+            </button>
+        </div>
     </footer>
 
     <script src="questions.js"></script> 
@@ -130,9 +143,9 @@
     <script>
         // --- 1. STATE MANAGEMENT ---
         const sectionNames = ['Reasoning', 'GK', 'Quant', 'English'];
-        let sectionsData = [[], [], [], []]; // Array of arrays for 4 sections
+        let sectionsData = [[], [], [], []]; // 4 Sections Container
         let currSec = 0; // 0=Reas, 1=GK, 2=Quant, 3=Eng
-        let currQ = 0; // Question index in current section
+        let currQ = 0; // Question index
         let timeLeft = 3600; // 60 mins
 
         // --- 2. INITIALIZATION ---
@@ -144,32 +157,37 @@
             setInterval(timerLoop, 1000);
         };
 
-        // --- 3. LOAD DATA FROM JSON FILE ---
+        // --- 3. DATA LOADING (Smart Logic) ---
         function loadData() {
-            // Check selected shift from previous page
             const selectedShift = localStorage.getItem('examShift') || "Demo Shift";
             
-            // Try to find data in allExamData (from questions.js)
-            let rawData = [];
+            // Check if questions.js is loaded and has data
             if (typeof allExamData !== 'undefined' && allExamData[selectedShift]) {
-                rawData = allExamData[selectedShift];
+                const rawData = allExamData[selectedShift];
+                // Distribute into sections
+                sectionsData[0] = rawData.filter(q => q.section === "Reasoning").map(formatQ);
+                sectionsData[1] = rawData.filter(q => q.section === "GK").map(formatQ);
+                sectionsData[2] = rawData.filter(q => q.section === "Quant").map(formatQ);
+                sectionsData[3] = rawData.filter(q => q.section === "English").map(formatQ);
             } else {
-                console.log("No data found for shift, loading Dummy Data");
-                // Dummy Data Generator (Fallback if file not ready)
-                rawData = Array.from({length: 100}, (_, i) => ({
-                    id: i+1, 
-                    section: i < 25 ? "Reasoning" : (i < 50 ? "GK" : (i < 75 ? "Quant" : "English")),
-                    text: `Sample Question ${i+1} for ${selectedShift}. (Actual content uploading soon...)`,
-                    options: ["Option A", "Option B", "Option C", "Option D"],
-                    correct: "A"
-                }));
+                // If NO Data Found -> Create Dummy Data so interface works
+                console.log("Loading Dummy Data");
+                for(let s=0; s<4; s++) {
+                    sectionsData[s] = Array.from({length: 25}, (_, i) => ({
+                        id: i+1, 
+                        text: `Sample Question ${i+1} for ${sectionNames[s]}. (Data uploading soon...)`,
+                        options: ["Option A", "Option B", "Option C", "Option D"],
+                        correct: "A",
+                        status: 'not-visited',
+                        marked: null
+                    }));
+                }
             }
+        }
 
-            // Organize into sections
-            sectionsData[0] = rawData.filter(q => q.section === "Reasoning").map(q => ({...q, status: 'not-visited', marked: null}));
-            sectionsData[1] = rawData.filter(q => q.section === "GK").map(q => ({...q, status: 'not-visited', marked: null}));
-            sectionsData[2] = rawData.filter(q => q.section === "Quant").map(q => ({...q, status: 'not-visited', marked: null}));
-            sectionsData[3] = rawData.filter(q => q.section === "English").map(q => ({...q, status: 'not-visited', marked: null}));
+        // Helper to format question object
+        function formatQ(q) {
+            return { ...q, status: 'not-visited', marked: null };
         }
 
         // --- 4. RENDER FUNCTIONS ---
@@ -186,56 +204,78 @@
             const grid = document.getElementById('grid-container');
             grid.innerHTML = sectionsData[currSec].map((q, i) => {
                 let color = 'bg-gray-200 text-gray-600 border border-gray-300';
-                if(q.status === 'answered') color = 'bg-green-500 text-white border-green-600';
-                if(q.status === 'not-answered') color = 'bg-red-500 text-white border-red-600';
                 
-                let activeClass = i === currQ ? 'ring-2 ring-blue-500 ring-offset-1' : '';
+                if(q.status === 'answered') color = 'bg-green-500 text-white border-green-600';
+                else if(q.status === 'not-answered') color = 'bg-red-500 text-white border-red-600';
+                else if(q.status === 'review') color = 'bg-purple-500 text-white border-purple-600';
+                
+                // Active Question Highlight (Blue Ring)
+                let activeClass = i === currQ ? 'ring-2 ring-blue-500 ring-offset-1 z-10' : '';
                 
                 return `<div onclick="jumpTo(${i})" class="h-9 w-9 rounded-md flex items-center justify-center text-xs font-bold cursor-pointer ${color} ${activeClass}">${i+1}</div>`;
             }).join('');
         }
 
         function loadQuestion() {
-            // Safe check
-            if (!sectionsData[currSec] || !sectionsData[currSec][currQ]) return;
-
             const q = sectionsData[currSec][currQ];
+            if(!q) return;
+
             document.getElementById('q-num').innerText = currQ + 1;
             document.getElementById('q-content').innerHTML = `<p class="font-medium text-lg leading-relaxed">${q.text}</p>`;
             
             const opts = document.getElementById('options-container');
-            const labels = ['A', 'B', 'C', 'D'];
-            
-            opts.innerHTML = q.options.map((optText, idx) => `
+            // If options exist, render them, else default A,B,C,D
+            const labels = q.options && q.options.length > 0 ? q.options : ['Option A', 'Option B', 'Option C', 'Option D'];
+            const optionKeys = ['A', 'B', 'C', 'D'];
+
+            opts.innerHTML = labels.map((optText, idx) => `
                 <label class="cursor-pointer block relative group">
-                    <input type="radio" name="opt" class="hidden opt-radio" value="${labels[idx]}" ${q.marked === labels[idx] ? 'checked' : ''}>
+                    <input type="radio" name="opt" class="hidden opt-radio" value="${optionKeys[idx]}" ${q.marked === optionKeys[idx] ? 'checked' : ''}>
                     <div class="flex items-center p-3 rounded-lg border border-gray-300 hover:border-blue-400 transition bg-white group-active:bg-gray-50">
-                        <span class="circle-id w-6 h-6 rounded-full border border-gray-400 mr-3 flex items-center justify-center font-bold text-xs text-gray-500 bg-gray-100">${labels[idx]}</span>
+                        <span class="circle-id w-6 h-6 rounded-full border border-gray-400 mr-3 flex items-center justify-center font-bold text-xs text-gray-500 bg-gray-100">${optionKeys[idx]}</span>
                         <span class="text-sm font-medium text-gray-700 w-full">${optText}</span>
                     </div>
                 </label>
             `).join('');
 
-            // Mark visited logic
+            // Mark as visited (Red) if seeing for first time
             if(q.status === 'not-visited') {
                 q.status = 'not-answered';
                 renderGrid();
             }
         }
 
-        // --- 5. INTERACTION LOGIC ---
+        // --- 5. ACTION BUTTONS ---
         function saveNext() {
             const sel = document.querySelector('input[name="opt"]:checked');
             if(sel) {
                 sectionsData[currSec][currQ].status = 'answered';
                 sectionsData[currSec][currQ].marked = sel.value;
-            } else {
+            } else if(sectionsData[currSec][currQ].status !== 'review') {
                 sectionsData[currSec][currQ].status = 'not-answered';
             }
             
-            // Move to next question
+            // Go to next question
             if(currQ < sectionsData[currSec].length - 1) {
                 currQ++;
+            } else {
+                // If last question of section, try moving to next section
+                if(currSec < 3) changeSec(currSec + 1);
+            }
+            loadQuestion();
+            renderGrid();
+        }
+
+        function prevQuestion() {
+            if(currQ > 0) {
+                currQ--;
+            } else {
+                // If first question, go to previous section last question
+                if(currSec > 0) {
+                    currSec--;
+                    currQ = sectionsData[currSec].length - 1;
+                    renderTabs();
+                }
             }
             loadQuestion();
             renderGrid();
@@ -245,6 +285,13 @@
             sectionsData[currSec][currQ].status = 'not-answered';
             sectionsData[currSec][currQ].marked = null;
             document.querySelectorAll('input').forEach(i => i.checked = false);
+            renderGrid();
+        }
+
+        function markForReview() {
+            sectionsData[currSec][currQ].status = 'review';
+            if(currQ < sectionsData[currSec].length - 1) currQ++;
+            loadQuestion();
             renderGrid();
         }
 
@@ -263,6 +310,13 @@
         }
 
         // --- 6. UTILITIES ---
+        function togglePalette() {
+            const p = document.getElementById('palette');
+            const o = document.getElementById('palette-overlay');
+            p.classList.toggle('palette-closed-mobile');
+            o.classList.toggle('hidden');
+        }
+
         function timerLoop() {
             if(timeLeft > 0) {
                 timeLeft--;
@@ -274,20 +328,9 @@
             }
         }
 
-        function togglePalette() {
-            const p = document.getElementById('palette');
-            const o = document.getElementById('palette-overlay');
-            p.classList.toggle('closed');
-            o.classList.toggle('hidden');
-        }
-
         function submitTest() {
-            if(confirm("Are you sure you want to submit?")) {
-                // Flatten data for analysis
-                const finalData = [
-                    sectionsData[0], sectionsData[1], sectionsData[2], sectionsData[3]
-                ];
-                localStorage.setItem('finalResult', JSON.stringify(finalData));
+            if(confirm("Are you sure you want to submit the test?")) {
+                localStorage.setItem('finalResult', JSON.stringify(sectionsData));
                 window.location.href = 'analysis.html';
             }
         }
