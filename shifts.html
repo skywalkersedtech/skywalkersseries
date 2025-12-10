@@ -19,10 +19,10 @@
     </header>
 
     <div class="max-w-xl mx-auto p-4 space-y-3" id="shifts-container">
-        </div>
+    </div>
 
     <script>
-        // Exact Data from your uploaded image (1-46)
+        // Data Array (This array is correct and already provided by you)
         const shifts = [
             { id: 1, date: "12 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 99.22, color: "red" },
             { id: 2, date: "18 Sep 2025", shift: "Shift-3 (04:00 PM)", avg: 99.95, color: "red" },
@@ -83,8 +83,11 @@
                               (s.color === 'orange' ? 'border-l-orange-500' : 
                               (s.color === 'yellow' ? 'border-l-yellow-500' : 'border-l-green-500'));
 
+            // NOTE: Key is set here! This MUST match the key in questions.js
+            const shiftKey = `${s.date} | ${s.shift}`;
+
             container.innerHTML += `
-                <a href="test.html" onclick="localStorage.setItem('examShift', '${s.date} | ${s.shift}')" 
+                <a href="test.html" onclick="localStorage.setItem('examShift', '${shiftKey}')" 
                    class="block bg-white p-4 rounded-lg shadow-sm border border-gray-200 border-l-4 ${borderClass} hover:shadow-md transition group">
                     <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-3">
